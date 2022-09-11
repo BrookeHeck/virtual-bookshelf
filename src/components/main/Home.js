@@ -4,7 +4,7 @@ import './../../css/Home.css';
 export default function Home() {
   return (
     <>
-      <h1>Home</h1>
+      <h1>Virtual Bookshelf</h1>
       <Container id='carousel-container'>
         <Carousel>
           <Carousel.Item>
