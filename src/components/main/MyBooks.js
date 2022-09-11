@@ -3,6 +3,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import axios from 'axios';
 import Book from './Book.js';
+import Filter from './Filter.js';
 import './../../css/MyBooks.css';
 
 export default function MyBooks() {
@@ -27,17 +28,7 @@ export default function MyBooks() {
   return (
     <Container id='myBooksContainer'>
       <Row id="filterContainer">
-        <Col xs='3' lg='2'>
-          <Card style={{ width: '15rem', height: '100vh', marginLeft: '10px' }} >
-            <Card.Body>
-              <Card.Title>Filters</Card.Title>
-              <Card.Text>Genre</Card.Text>
-              <Card.Text>Date Read</Card.Text>
-              <Card.Text>Finished</Card.Text>
-              <Button style={{ marginTop: '2.5rem' }}>Add to Collection</Button>
-            </Card.Body>
-          </Card>
-        </Col>
+        <Filter/>
 
         <Col xs='9' lg='10'>
           <Container id="allBookDiv">
