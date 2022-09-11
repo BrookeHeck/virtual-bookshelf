@@ -1,5 +1,6 @@
-import { Navbar, Nav, Container, Button } from 'react-bootstrap';
+import { Navbar, Nav, Container } from 'react-bootstrap';
 import Profile from './Profile.js';
+import Logout from '../auth0/Logout.js';
 import './../../css/TopNav.css';
 
 export default function TopNav() {
@@ -19,9 +20,7 @@ export default function TopNav() {
         </Navbar.Collapse>
         </Container>
         <Container>
-          <Button>
-            Logout
-          </Button>
+          <Logout/>
         </Container>
       </Navbar>
       <br />
