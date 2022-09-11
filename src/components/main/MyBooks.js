@@ -10,9 +10,9 @@ export default function MyBooks() {
     getBooks().then(allBooks => updateBooks(allBooks.data));
   }, []);
   return (
-    <Container>
+    <Container id='myBooksContainer'>
       <Row id="filterContainer">
-        <Col xs='4'>
+        <Col xs='3' lg='2'>
           <Card style={{ width: '15rem', height: '100vh', marginLeft: '10px' }} >
             <Card.Body>
               <Card.Title>Filters</Card.Title>
@@ -24,7 +24,7 @@ export default function MyBooks() {
           </Card>
         </Col>
 
-        <Col xs='8'>
+        <Col xs='9' lg='10'>
           <Container id="allBookDiv">
             {books.map(book => {
               return <Book
