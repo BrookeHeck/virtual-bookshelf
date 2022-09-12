@@ -1,8 +1,8 @@
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import Profile from './Profile.js';
-import Logout from '../auth0/Logout.js';
+import Logout from './Logout.js';
 import { useAuth0 } from '@auth0/auth0-react';
-import Login from './../auth0/Login';
+import Login from './Login';
 import './../../css/TopNav.css';
 
 export default function TopNav() {

@@ -3,13 +3,13 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import axios from 'axios';
-import Home from './components/main/Home.js';
-import MyBooks from './components/main/MyBooks.js';
-import BookSearch from './components/main/BookSearch.js';
-import NoPage from './components/NoPage.js';
+import Home from './components/home/Home.js';
+import MyBooks from './components/myBooks/MyBooks.js';
+import BookSearch from './components/bookSearch/BookSearch.js';
+import NoPage from './components/header/NoPage.js';
 import TopNav from './components/header/TopNav.js';
 
-const App = () => {
+export default function App() {
   const [dbUser, updateUser] = useState([]);
   const { isAuthenticated, getIdTokenClaims, user } = useAuth0();
 
@@ -41,8 +41,6 @@ const App = () => {
         </div>
   );
 }
-
-export default App;
 
 async function getUser(jwt, user) {
   try {

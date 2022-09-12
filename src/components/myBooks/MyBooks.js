@@ -4,7 +4,6 @@ import Filter from './Filter.js';
 import './../../css/MyBooks.css';
 
 export default function MyBooks(props) {
-    console.log(props);
     return (
     <Container id='myBooksContainer'>
       <Row id="filterContainer">
@@ -13,6 +12,7 @@ export default function MyBooks(props) {
         <Col xs='9' lg='10'>
           <Container id="allBookDiv">
             {
+              props.books && 
               props.books.map(book => {
                 return <Book
                   key={book._id}
