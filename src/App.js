@@ -20,7 +20,9 @@ export default function App() {
         return res.__raw;
       }
       try {
-        getToken().then(jwt => getUser(jwt, user)).then(dbUser => updateUser(dbUser));
+        getToken()
+        .then(jwt => getUser(jwt, user))
+        .then(dbUser => updateUser(dbUser))
       } catch (e) {
         console.log(e);
       }
@@ -48,12 +50,25 @@ async function getUser(jwt, user) {
       headers: { "Authorization": `Bearer ${jwt}` },
       method: 'get',
       baseURL: process.env.REACT_APP_SERVER,
-      url: '/books',
+      url: '/user',
       params: {email: user.email}
     }
     let res = await axios(config);
-    return res.data[0];
+    return res.data.length === 0 ? createUser(jwt, user) : res.data[0];
   } catch (e) {
+    console.log(e);
+  }
+}
+
+async function createUser(jwt, user) {
+  try {
+    const config = {
+      headers: { "Authorization": `Bearer ${jwt}` }
+    }
+    let res = await axios.post(`${process.env.REACT_APP_SERVER}/user`, {userName: user.name, email: user.email}, config);
+    console.log(res.data[0]);
+    return res.data[0];
+  } catch(e) {
     console.log(e);
   }
 }
