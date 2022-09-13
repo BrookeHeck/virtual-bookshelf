@@ -34,16 +34,16 @@ export default function App() {
 
   return (
     <div className="App">
-          <TopNav />
-          <BrowserRouter>
-            <Routes>
-              <Route exact path='/' element={<Home />} />
-              <Route path='my-books' element={<MyBooks dbUser={dbUser} userUpdate={userUpdate}/>} />
-              <Route path='book-search' element={<BookSearch />} />
-              <Route path='*' element={<NoPage />} />
-            </Routes>
-          </BrowserRouter>
-        </div>
+      <TopNav />
+      <BrowserRouter>
+        <Routes>
+          <Route exact path='/' element={<Home />} />
+          <Route path='my-books' element={<MyBooks setUser={setUser} dbUser={dbUser} />} />
+          <Route path='book-search' element={<BookSearch />} />
+          <Route path='*' element={<NoPage />} />
+        </Routes>
+      </BrowserRouter>
+    </div>
   );
 }
 
@@ -73,19 +73,6 @@ async function createUser(jwt, user) {
     }
     let res = await axios.post(`${process.env.REACT_APP_SERVER}/user`, {userName: user.name, email: user.email}, config);
     return res.data[0];
-  } catch(e) {
-    console.log(e);
-  }
-}
-
-// updates the user account whenever any changes to book collection are made
-async function userUpdate(jwt, user) {
-  try {
-    const config = {
-      headers: { "Authorization": `Bearer ${jwt}` }
-    }
-    let res = await axios.post(`${process.env.REACT_APP_SERVER}/user`, user, config);
-    useState.updateUser(res.data[0]);
   } catch(e) {
     console.log(e);
   }

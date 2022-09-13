@@ -1,7 +1,6 @@
 import { Card, Button } from 'react-bootstrap';
 
 export default function Book(props) {
-  console.log(props);
   return (
     <Card style={{ width: '200px', margin: '0 auto' }}>
       <Card.Body>
