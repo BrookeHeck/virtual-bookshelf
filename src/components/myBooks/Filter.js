@@ -1,4 +1,4 @@
-import { Col, Card, Button } from 'react-bootstrap';
+import { Col, Card } from 'react-bootstrap';
 
 export default function Filter() {
   return (
@@ -9,7 +9,6 @@ export default function Filter() {
           <Card.Text>Genre</Card.Text>
           <Card.Text>Date Read</Card.Text>
           <Card.Text>Finished</Card.Text>
-          <Button style={{ marginTop: '2.5rem' }}>Add to Collection</Button>
         </Card.Body>
       </Card>
     </Col>

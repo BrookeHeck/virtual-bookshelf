@@ -9,8 +9,11 @@ import BookSearch from './components/bookSearch/BookSearch.js';
 import NoPage from './components/header/NoPage.js';
 import TopNav from './components/header/TopNav.js';
 
+// The parent to all my react components
+// After authentication, the user is either retrieved from the db or added if no account has been made
+
 export default function App() {
-  const [dbUser, updateUser] = useState([]);
+  const [dbUser, setUser] = useState([]);
   const { isAuthenticated, getIdTokenClaims, user } = useAuth0();
 
   useEffect(() => {
@@ -22,7 +25,7 @@ export default function App() {
       try {
         getToken()
         .then(jwt => getUser(jwt, user))
-        .then(dbUser => updateUser(dbUser))
+        .then(dbUser => setUser(dbUser))
       } catch (e) {
         console.log(e);
       }
@@ -35,7 +38,7 @@ export default function App() {
           <BrowserRouter>
             <Routes>
               <Route exact path='/' element={<Home />} />
-              <Route path='my-books' element={<MyBooks books={dbUser.userBooks}/>} />
+              <Route path='my-books' element={<MyBooks dbUser={dbUser} userUpdate={userUpdate}/>} />
               <Route path='book-search' element={<BookSearch />} />
               <Route path='*' element={<NoPage />} />
             </Routes>
@@ -44,7 +47,9 @@ export default function App() {
   );
 }
 
+// get a user from the database, search database by the email
 async function getUser(jwt, user) {
+  // console.log(jwt);
   try {
     const config = {
       headers: { "Authorization": `Bearer ${jwt}` },
@@ -60,14 +65,27 @@ async function getUser(jwt, user) {
   }
 }
 
+// if the database search comes up empty, create a user using credentials from Auth0
 async function createUser(jwt, user) {
   try {
     const config = {
       headers: { "Authorization": `Bearer ${jwt}` }
     }
     let res = await axios.post(`${process.env.REACT_APP_SERVER}/user`, {userName: user.name, email: user.email}, config);
-    console.log(res.data[0]);
     return res.data[0];
+  } catch(e) {
+    console.log(e);
+  }
+}
+
+// updates the user account whenever any changes to book collection are made
+async function userUpdate(jwt, user) {
+  try {
+    const config = {
+      headers: { "Authorization": `Bearer ${jwt}` }
+    }
+    let res = await axios.post(`${process.env.REACT_APP_SERVER}/user`, user, config);
+    useState.updateUser(res.data[0]);
   } catch(e) {
     console.log(e);
   }
