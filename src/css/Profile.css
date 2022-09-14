@@ -1,0 +1,16 @@
+#profileDiv img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+#profileDiv h2 {
+  font-size: 15px;
+  padding-left: 15px;
+}
+
+#profileDiv {
+  display: flex;
+  align-items: center;
+}
+
