@@ -8,13 +8,14 @@ import './../../css/MyBooks.css';
 export default function MyBooks({ setUser, dbUser }) {
   const [showModal, setShowModal] = useState(false);
   const [action, setAction] = useState('');
+  const [selectedBook, setSelectedBook] = useState('');
 
   return (
     <>
       <Container id='myBooksContainer'>
         <Button
           onClick={() => {
-            setAction('Add');
+            setAction('add');
             setShowModal(true);
           }
           } >
@@ -27,13 +28,13 @@ export default function MyBooks({ setUser, dbUser }) {
             <Container id="allBookDiv">
               {
                 dbUser.userBooks &&
-                dbUser.userBooks.map(book => {
+                dbUser.userBooks.map((book, idx) => {
                   return <Book
-                    key={book._id}
-                    title={book.title}
-                    author={book.author}
-                    notes={book.notes}
-                    quotes={book.quotes}
+                    key={idx}
+                    book={book}
+                    setShowModal={setShowModal}
+                    setAction={setAction}
+                    setSelectedBook={setSelectedBook}
                   />
                 })
               }
@@ -41,7 +42,13 @@ export default function MyBooks({ setUser, dbUser }) {
           </Col>
         </Row>
       </Container>
-      <BookForm showModal={showModal} setShowModal={setShowModal} setUser={setUser} dbUser={dbUser} action={action} />
+      <BookForm
+        showModal={showModal}
+        setShowModal={setShowModal}
+        setUser={setUser}
+        dbUser={dbUser}
+        action={action}
+        selectedBook={selectedBook} />
     </>
   );
 }
