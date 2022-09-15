@@ -88,6 +88,7 @@ export default function BookForm({ showModal, setShowModal, setUser, dbUser, act
             <Form.Check
               inline
               label={status}
+              value={status}
               name='group1'
               type='radio'
               id='status'

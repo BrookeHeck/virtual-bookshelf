@@ -28,13 +28,15 @@ export default function MyBooks({ setUser, dbUser }) {
             <Container id="allBookDiv">
               {
                 dbUser.userBooks &&
-                dbUser.userBooks.map((book, idx) => {
+                dbUser.userBooks.map(book => {
                   return <Book
-                    key={idx}
+                    key={book._id}
                     book={book}
                     setShowModal={setShowModal}
                     setAction={setAction}
                     setSelectedBook={setSelectedBook}
+                    setUser={setUser}
+                    dbUserID={dbUser._id}
                   />
                 })
               }
