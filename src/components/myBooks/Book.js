@@ -2,7 +2,7 @@ import { Card, Button } from 'react-bootstrap';
 import { useAuth0 } from '@auth0/auth0-react';
 import axios from 'axios';
 
-export default function Book({ book, setAction, setShowModal, setSelectedBook, dbUserID, setUser }) {
+export default function Book({ book, setAction, setShowModal, setSelectedBook }) {
   const { isAuthenticated, getIdTokenClaims } = useAuth0();
 
   const deleteBook = async () => {
@@ -17,19 +17,12 @@ export default function Book({ book, setAction, setShowModal, setSelectedBook, d
           const config = {
             headers: { "Authorization": `Bearer ${jwt}` }
           }
-          console.log(book._id);
-          let user = axios.put(`${process.env.REACT_APP_SERVER}/delete-book/${dbUserID}`, book._id , config);
-          console.log(user);
-          return user;
+          let res = axios.delete(`${process.env.REACT_APP_SERVER}/my-books/${book._id}`, config);
+          return res.data;
         })
-        .then(res => setUser(res.data))
         .catch(e => console.log(e));
     }
   }
-
-
-
-
 
   return (
     <>

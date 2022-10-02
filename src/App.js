@@ -38,7 +38,7 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           <Route exact path='/' element={<Home />} />
-          <Route path='my-books' element={<MyBooks setUser={setUser} dbUser={dbUser} />} />
+          <Route path='my-books' element={<MyBooks user_id={dbUser._id} />} />
           <Route path='book-search' element={<BookSearch />} />
           <Route path='*' element={<NoPage />} />
         </Routes>
@@ -49,14 +49,13 @@ export default function App() {
 
 // get a user from the database, search database by the email
 async function getUser(jwt, user) {
-  // console.log(jwt);
   try {
     const config = {
       headers: { "Authorization": `Bearer ${jwt}` },
-      method: 'get',
+      method: 'post',
       baseURL: process.env.REACT_APP_SERVER,
-      url: '/user',
-      params: {email: user.email}
+      url: '/signin',
+      data: {email: user.email}
     }
     let res = await axios(config);
     return res.data.length === 0 ? createUser(jwt, user) : res.data[0];
@@ -69,9 +68,13 @@ async function getUser(jwt, user) {
 async function createUser(jwt, user) {
   try {
     const config = {
-      headers: { "Authorization": `Bearer ${jwt}` }
+      headers: { "Authorization": `Bearer ${jwt}` },
+      method: 'post',
+      baseURL: process.env.REACT_APP_SERVER,
+      url: '/signup',
+      data: {userName: user.name, email: user.email},
     }
-    let res = await axios.post(`${process.env.REACT_APP_SERVER}/user`, {userName: user.name, email: user.email}, config);
+    let res = await axios(config);
     return res.data[0];
   } catch(e) {
     console.log(e);
