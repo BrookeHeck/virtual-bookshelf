@@ -1,15 +1,13 @@
-import { useAuth0 } from '@auth0/auth0-react';
 import { Button, Modal, Form } from 'react-bootstrap';
 import axios from 'axios';
 
 
-export default function BookForm({ showModal, setShowModal, user_id, action, selectedBook, setBooks, books }) {
-  const { isAuthenticated, getIdTokenClaims } = useAuth0();
+export default function BookForm({ showModal, setShowModal, action, selectedBook, setBooks, books }) {
 
-  const addBook = async (jwt, newBook) => {
+  const addBook = async (token, newBook) => {
     try {
       const config = {
-        headers: { "Authorization": `Bearer ${jwt}` }
+        headers: { "Authorization": `Bearer ${token}` }
       }
       const res = await axios.post(`${process.env.REACT_APP_SERVER}/my-books`, newBook, config);
       const updatedList = books;
@@ -20,10 +18,10 @@ export default function BookForm({ showModal, setShowModal, user_id, action, sel
     }
   }
 
-  const editBook = async (jwt, updatedBook) => {
+  const editBook = async (token, updatedBook) => {
     try {
       const config = {
-        headers: { "Authorization": `Bearer ${jwt}` }
+        headers: { "Authorization": `Bearer ${token}` }
       }
       let res = await axios.put(`${process.env.REACT_APP_SERVER}/my-books/${selectedBook._id}`, updatedBook, config);
       const updatedList = books;
@@ -47,13 +45,12 @@ export default function BookForm({ showModal, setShowModal, user_id, action, sel
       genre: e.target.genre.value || selectedBook.genre,
       date: selectedBook.date || `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`,
       status: e.target.status.value || selectedBook.status,
-      user_id: user_id,
+      user_id: localStorage.getItem('id'),
     }
     try {
-      if(isAuthenticated) {
-        const jwt = await getIdTokenClaims();
-        action === 'add' ? addBook(jwt, newBook) : editBook(jwt, newBook);
-      }
+      const token = localStorage.getItem('token');
+      console.log(token);
+      action === 'add' ? addBook(token, newBook) : editBook(token, newBook);
     } catch(e) {
       console.log(e);
     }

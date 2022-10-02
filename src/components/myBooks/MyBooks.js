@@ -1,6 +1,5 @@
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import React, { useEffect, useState } from 'react';
-import { useAuth0 } from '@auth0/auth0-react';
 import Book from './Book.js';
 import Filter from './Filter.js';
 import BookForm from './BookForm.js';
@@ -11,18 +10,17 @@ export default function MyBooks({ user_id }) {
   const [showModal, setShowModal] = useState(false);
   const [action, setAction] = useState('');
   const [selectedBook, setSelectedBook] = useState({});
-  const {isAuthenticated, getIdTokenClaims} = useAuth0();
   const [books, setBooks] = useState([]);
 
   useEffect(() => {
     const getBooks = async () => {
       try {
-        const jwt = await getIdTokenClaims();
+        const token = localStorage.getItem('token');
         const config = {
-          headers: { "Authorization": `Bearer ${jwt.__raw}` },
+          headers: { "Authorization": `Bearer ${token}` },
           method: 'get',
           baseURL: process.env.REACT_APP_SERVER,
-          url: `/my-books/${user_id}`,
+          url: `/my-books/${localStorage.getItem('id')}`,
         }
         const res = await axios(config);
         setBooks(res.data);
@@ -30,10 +28,8 @@ export default function MyBooks({ user_id }) {
         console.log(e);
       }
     }
-    if(isAuthenticated) {
-      getBooks();
-    }
-  }, [getIdTokenClaims, isAuthenticated, user_id, books]);
+    if(localStorage.getItem('token')) getBooks();
+  }, [setBooks]);
 
   return (
     <>
@@ -71,7 +67,6 @@ export default function MyBooks({ user_id }) {
       <BookForm
         showModal={showModal}
         setShowModal={setShowModal}
-        user_id={user_id}
         action={action}
         selectedBook={selectedBook}
         books={books}

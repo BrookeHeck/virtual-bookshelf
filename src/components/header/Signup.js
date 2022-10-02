@@ -1,40 +1,47 @@
 import { Button, Modal, Form } from 'react-bootstrap';
-import React, { useState } from "react";
+import React, { useState } from 'react';
 const axios = require('axios');
 
-export default function Login() {
-  const [ showModal, setShowModal ] = useState(false);
+export default function Signup({setUser, setIsAuthenticated}) {
+  const [showModal, setShowModal] = useState(false);
+
   return (
     <>
-      <Button onClick={() => setShowModal(true)}>Log In</Button>
-      <LoginForm setShowModal={setShowModal} showModal={showModal} />
+      <Button onClick={() => setShowModal(true)}>Sign Up</Button>
+      <SignupForm 
+        setUser={setUser}
+        showModal={showModal}
+        setShowModal={setShowModal}
+        setIsAuthenticated={setIsAuthenticated}  
+      />
     </>
-  )
-}
+  );
+};
 
 // get a user from the database, search database by the email
-async function getUser(e) {
+// if the database search comes up empty, create a user using credentials from Auth0
+async function createUser(e) {
   try {
     const config = {
-      auth: { username: e.target.username.value, password:e.target.password.value },
       method: 'post',
       baseURL: process.env.REACT_APP_SERVER,
-      url: '/signin',
+      url: '/signup',
+      data: {username: e.target.username.value, password: e.target.password.value},
     }
     let res = await axios(config);
-    return res.data.user;
-  } catch (e) {
+    return res.data;
+  } catch(e) {
     console.log(e);
   }
 }
 
-const LoginForm = ({ showModal, setShowModal}) => {
+const SignupForm = ({ showModal, setShowModal }) => {
   return (
     <Modal show={showModal} onHide={() => setShowModal(false)}>
       <Modal.Header closeButton>Add a Book</Modal.Header>
       <Form onSubmit={async (e) => {
         e.preventDefault();
-        const user = await getUser(e);
+        const user = await createUser(e);
         localStorage.setItem('token', `${user.token}`);
         localStorage.setItem('id', `${user._id}`);
       }}>
