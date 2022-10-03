@@ -2,12 +2,16 @@ import { Button, Modal, Form } from 'react-bootstrap';
 import React, { useState } from "react";
 const axios = require('axios');
 
-export default function Login() {
+export default function Login({ setIsAuthenticated }) {
   const [ showModal, setShowModal ] = useState(false);
   return (
     <>
       <Button onClick={() => setShowModal(true)}>Log In</Button>
-      <LoginForm setShowModal={setShowModal} showModal={showModal} />
+      <LoginForm 
+        setShowModal={setShowModal} 
+        showModal={showModal} 
+        setIsAuthenticated={setIsAuthenticated}
+      />
     </>
   )
 }
@@ -28,15 +32,17 @@ async function getUser(e) {
   }
 }
 
-const LoginForm = ({ showModal, setShowModal}) => {
+const LoginForm = ({ showModal, setShowModal, setIsAuthenticated}) => {
   return (
     <Modal show={showModal} onHide={() => setShowModal(false)}>
       <Modal.Header closeButton>Sign In</Modal.Header>
       <Form onSubmit={async (e) => {
         e.preventDefault();
         const user = await getUser(e);
+        if(user.token) setIsAuthenticated(true);
         localStorage.setItem('token', `${user.token}`);
         localStorage.setItem('id', `${user._id}`);
+        localStorage.setItem('role', `${user.role}`);
       }}>
 
         <Form.Group className="mb-3">
