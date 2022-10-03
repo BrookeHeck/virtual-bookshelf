@@ -1,7 +1,21 @@
 import { Card, Button } from 'react-bootstrap';
-import { useAuth0 } from '@auth0/auth0-react';
+import axios from 'axios';
 
-export default function Book({ book, setAction, setShowModal, setSelectedBook }) {
+export default function Book({ setShowNotes, book, setAction, setShowModal, setSelectedBook }) {
+
+
+  const deleteBook = async () => {
+    const token = localStorage.getItem('token')
+    if (token) {
+      try {
+        const config = {
+          headers: { "Authorization": `Bearer ${token}` }
+        }
+        let res = axios.delete(`${process.env.REACT_APP_SERVER}/my-books/${book._id}`, config);
+        return res.data;
+      } catch(e) {console.log(e)}
+    }
+  }
 
   return (
     <>
@@ -12,20 +26,23 @@ export default function Book({ book, setAction, setShowModal, setSelectedBook })
           <Card.Text>{book.genre}</Card.Text>
           <Card.Text>{book.date}</Card.Text>
           <Card.Text>{book.status}</Card.Text>
-          <Card.Link href="#">Notes</Card.Link>
-          <Card.Link href="#">Quotes</Card.Link>
+          <Card.Text onClick={() => {
+            setShowNotes(true);
+            setSelectedBook(book);
+          }}>Notes</Card.Text>
+          
 
           <Button
             variant="primary"
-            onClick={() => {setShowModal(true); setAction('edit'); setSelectedBook(book)}}
-            >
+            onClick={() => { setShowModal(true); setAction('edit'); setSelectedBook(book) }}
+          >
             Edit
           </Button>
 
           <Button
             variant="primary"
-            onClick={() => {setSelectedBook(book);}}
-            >
+            onClick={deleteBook}
+          >
             Delete
           </Button>
         </Card.Body>

@@ -1,36 +1,39 @@
-import { useAuth0 } from '@auth0/auth0-react';
 import { Button, Modal, Form } from 'react-bootstrap';
 import axios from 'axios';
 
 
-export default function BookForm({ showModal, setShowModal, setUser, dbUser, action, selectedBook }) {
-  const { isAuthenticated, getIdTokenClaims } = useAuth0();
+export default function BookForm({ showModal, setShowModal, action, selectedBook, setBooks, books }) {
 
-  const addBook = async (jwt, newBook) => {
+  const addBook = async (token, newBook) => {
     try {
       const config = {
-        headers: { "Authorization": `Bearer ${jwt}` }
+        headers: { "Authorization": `Bearer ${token}` }
       }
-      let res = await axios.post(`${process.env.REACT_APP_SERVER}/add-book/${dbUser._id}`, newBook, config);
-      setUser(res.data);
+      const res = await axios.post(`${process.env.REACT_APP_SERVER}/my-books`, newBook, config);
+      const updatedList = books;
+      updatedList.push(res.data);
+      setBooks(updatedList);
     } catch (e) {
       console.log(e);
     }
   }
 
-  const editBook = async (jwt, updatedBook) => {
+  const editBook = async (token, updatedBook) => {
     try {
       const config = {
-        headers: { "Authorization": `Bearer ${jwt}` }
+        headers: { "Authorization": `Bearer ${token}` }
       }
-      let res = await axios.put(`${process.env.REACT_APP_SERVER}/update-book/${dbUser._id}`, updatedBook, config);
-      setUser(res.data);
+      let res = await axios.put(`${process.env.REACT_APP_SERVER}/my-books/${selectedBook._id}`, updatedBook, config);
+      const updatedList = books;
+      const index = updatedList.findIndex(book => book._id === selectedBook._id);
+      updatedList.splice(index, 1, res.data);
+      setBooks(updatedList);
     } catch (e) {
       console.log(e);
     }
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     setShowModal(false);
@@ -42,24 +45,13 @@ export default function BookForm({ showModal, setShowModal, setUser, dbUser, act
       genre: e.target.genre.value || selectedBook.genre,
       date: selectedBook.date || `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`,
       status: e.target.status.value || selectedBook.status,
-      lists: selectedBook.lists || ['All Books'],
-      notes: selectedBook.notes || [],
-      quotes: selectedBook.quotes || [],
-      _id: selectedBook._id || ''
+      user_id: localStorage.getItem('id'),
     }
-
-
-    if (isAuthenticated) {
-      const getToken = async () => {
-        let res = await getIdTokenClaims();
-        return res.__raw;
-      }
-      getToken()
-        .then(jwt => {
-          if(action === 'add') addBook(jwt, newBook);
-          if(action === 'edit') editBook(jwt, newBook);
-        })
-        .catch(e => console.log(e));
+    try {
+      const token = localStorage.getItem('token');
+      action === 'add' ? addBook(token, newBook) : editBook(token, newBook);
+    } catch(e) {
+      console.log(e);
     }
   }
 
@@ -88,6 +80,7 @@ export default function BookForm({ showModal, setShowModal, setUser, dbUser, act
             <Form.Check
               inline
               label={status}
+              value={status}
               name='group1'
               type='radio'
               id='status'

@@ -1,22 +1,14 @@
 import { Navbar, Nav, Container } from 'react-bootstrap';
-import Profile from './Profile.js';
 import Logout from './Logout.js';
-import { useAuth0 } from '@auth0/auth0-react';
 import Login from './Login';
+import Signup from './Signup';
 import './../../css/TopNav.css';
 
 export default function TopNav() {
-  const { isAuthenticated, error } = useAuth0();
 
-  if (error) {
-    return <div>{error.message}</div>;
-  }
   return (
     <>
       <Navbar bg="light">
-        <Container>
-          { isAuthenticated && <Profile /> }
-        </Container>
         <Container>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
@@ -28,7 +20,13 @@ export default function TopNav() {
         </Navbar.Collapse>
         </Container>
         <Container>
-          { isAuthenticated ? <Logout/> : <Login/> }
+          { localStorage.getItem('token') ? 
+            <Logout /> : 
+            <>
+              <Signup/>
+              <Login/>
+            </>
+          }
         </Container>
       </Navbar>
       <br />

@@ -1,17 +1,43 @@
 import { Container, Row, Col, Button } from 'react-bootstrap';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Book from './Book.js';
 import Filter from './Filter.js';
 import BookForm from './BookForm.js';
+import Notes from './Notes';
 import './../../css/MyBooks.css';
+import axios from 'axios';
 
-export default function MyBooks({ setUser, dbUser }) {
+export default function MyBooks({ id, setId }) {
   const [showModal, setShowModal] = useState(false);
   const [action, setAction] = useState('');
-  const [selectedBook, setSelectedBook] = useState('');
+  const [selectedBook, setSelectedBook] = useState({});
+  const [books, setBooks] = useState([]);
+  const [showNotes, setShowNotes] = useState(false);
+
+  useEffect(() => {
+    const getBooks = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const config = {
+          headers: { "Authorization": `Bearer ${token}` },
+          method: 'get',
+          baseURL: process.env.REACT_APP_SERVER,
+          url: `/my-books/${localStorage.getItem('id')}`,
+        }
+        const res = await axios(config);
+        setBooks(res.data);
+      } catch(e) {
+        console.log(e);
+      }
+    }
+    if(localStorage.getItem('token')) getBooks();
+  }, [setBooks, books]);
 
   return (
     <>
+      {
+      !showNotes && 
+      <>
       <Container id='myBooksContainer'>
         <Button
           onClick={() => {
@@ -27,14 +53,15 @@ export default function MyBooks({ setUser, dbUser }) {
           <Col xs='9' lg='10'>
             <Container id="allBookDiv">
               {
-                dbUser.userBooks &&
-                dbUser.userBooks.map((book, idx) => {
+                books &&
+                books.map(book => {
                   return <Book
-                    key={idx}
+                    key={book._id}
                     book={book}
                     setShowModal={setShowModal}
                     setAction={setAction}
                     setSelectedBook={setSelectedBook}
+                    setShowNotes={setShowNotes}
                   />
                 })
               }
@@ -42,13 +69,22 @@ export default function MyBooks({ setUser, dbUser }) {
           </Col>
         </Row>
       </Container>
+
       <BookForm
         showModal={showModal}
         setShowModal={setShowModal}
-        setUser={setUser}
-        dbUser={dbUser}
         action={action}
-        selectedBook={selectedBook} />
+        selectedBook={selectedBook}
+        books={books}
+        setBooks={setBooks}
+      />
+    </>
+    }
+
+    {
+      showNotes &&
+      <Notes book_id={selectedBook._id} setShowNotes={setShowNotes}/>
+    }
     </>
   );
 }
