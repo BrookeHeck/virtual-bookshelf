@@ -5,7 +5,7 @@ import MyBooks from './components/myBooks/MyBooks.js';
 import BookSearch from './components/bookSearch/BookSearch.js';
 import NoPage from './components/header/NoPage.js';
 import TopNav from './components/header/TopNav.js';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 // The parent to all my react components
 // After authentication, the user is either retrieved from the db or added if no account has been made

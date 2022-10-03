@@ -50,17 +50,17 @@ export default function Notes({ book_id, setShowNotes }) {
   )
 }
 
-async function deleteNote(id) {
-  try {
-    const token = localStorage.getItem('token');
-    const config = {
-      headers: { "Authorization": `Bearer ${token}` },
-      method: 'delete',
-      baseURL: process.env.REACT_APP_SERVER,
-      url: `/notes/${id}`,
-    }
-    const res = await axios(config);
-    console.log(res.data);
-    return res.data;
-  } catch(e) {console.log(e)}
-}
+// async function deleteNote(id) {
+//   try {
+//     const token = localStorage.getItem('token');
+//     const config = {
+//       headers: { "Authorization": `Bearer ${token}` },
+//       method: 'delete',
+//       baseURL: process.env.REACT_APP_SERVER,
+//       url: `/notes/${id}`,
+//     }
+//     const res = await axios(config);
+//     console.log(res.data);
+//     return res.data;
+//   } catch(e) {console.log(e)}
+// }
