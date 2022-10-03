@@ -3,14 +3,16 @@ import React, { useEffect, useState } from 'react';
 import Book from './Book.js';
 import Filter from './Filter.js';
 import BookForm from './BookForm.js';
+import Notes from './Notes';
 import './../../css/MyBooks.css';
 import axios from 'axios';
 
-export default function MyBooks({ user_id }) {
+export default function MyBooks({ id, setId }) {
   const [showModal, setShowModal] = useState(false);
   const [action, setAction] = useState('');
   const [selectedBook, setSelectedBook] = useState({});
   const [books, setBooks] = useState([]);
+  const [showNotes, setShowNotes] = useState(false);
 
   useEffect(() => {
     const getBooks = async () => {
@@ -29,10 +31,13 @@ export default function MyBooks({ user_id }) {
       }
     }
     if(localStorage.getItem('token')) getBooks();
-  }, [setBooks]);
+  }, [setBooks, books]);
 
   return (
     <>
+      {
+      !showNotes && 
+      <>
       <Container id='myBooksContainer'>
         <Button
           onClick={() => {
@@ -56,6 +61,7 @@ export default function MyBooks({ user_id }) {
                     setShowModal={setShowModal}
                     setAction={setAction}
                     setSelectedBook={setSelectedBook}
+                    setShowNotes={setShowNotes}
                   />
                 })
               }
@@ -72,6 +78,13 @@ export default function MyBooks({ user_id }) {
         books={books}
         setBooks={setBooks}
       />
+    </>
+    }
+
+    {
+      showNotes &&
+      <Notes book_id={selectedBook._id} setShowNotes={setShowNotes}/>
+    }
     </>
   );
 }

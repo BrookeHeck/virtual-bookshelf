@@ -49,7 +49,6 @@ export default function BookForm({ showModal, setShowModal, action, selectedBook
     }
     try {
       const token = localStorage.getItem('token');
-      console.log(token);
       action === 'add' ? addBook(token, newBook) : editBook(token, newBook);
     } catch(e) {
       console.log(e);

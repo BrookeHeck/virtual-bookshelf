@@ -31,7 +31,7 @@ async function getUser(e) {
 const LoginForm = ({ showModal, setShowModal}) => {
   return (
     <Modal show={showModal} onHide={() => setShowModal(false)}>
-      <Modal.Header closeButton>Add a Book</Modal.Header>
+      <Modal.Header closeButton>Sign In</Modal.Header>
       <Form onSubmit={async (e) => {
         e.preventDefault();
         const user = await getUser(e);

@@ -1,7 +1,8 @@
 import { Card, Button } from 'react-bootstrap';
 import axios from 'axios';
 
-export default function Book({ book, setAction, setShowModal, setSelectedBook }) {
+export default function Book({ setShowNotes, book, setAction, setShowModal, setSelectedBook }) {
+
 
   const deleteBook = async () => {
     const token = localStorage.getItem('token')
@@ -25,8 +26,11 @@ export default function Book({ book, setAction, setShowModal, setSelectedBook })
           <Card.Text>{book.genre}</Card.Text>
           <Card.Text>{book.date}</Card.Text>
           <Card.Text>{book.status}</Card.Text>
-          <Card.Link href="#">Notes</Card.Link>
-          <Card.Link href="#">Quotes</Card.Link>
+          <Card.Text onClick={() => {
+            setShowNotes(true);
+            setSelectedBook(book);
+          }}>Notes</Card.Text>
+          
 
           <Button
             variant="primary"
