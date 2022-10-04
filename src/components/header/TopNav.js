@@ -4,7 +4,7 @@ import Login from './Login';
 import Signup from './Signup';
 import './../../css/TopNav.css';
 
-export default function TopNav() {
+export default function TopNav({isAuthenticated, setIsAuthenticated}) {
 
   return (
     <>
@@ -20,11 +20,11 @@ export default function TopNav() {
         </Navbar.Collapse>
         </Container>
         <Container>
-          { localStorage.getItem('token') ? 
-            <Logout /> : 
+          { isAuthenticated ? 
+            <Logout isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated}/> : 
             <>
-              <Signup/>
-              <Login/>
+              <Signup isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated}/>
+              <Login isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
             </>
           }
         </Container>

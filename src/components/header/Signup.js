@@ -35,15 +35,17 @@ async function createUser(e) {
   }
 }
 
-const SignupForm = ({ showModal, setShowModal }) => {
+const SignupForm = ({ showModal, setShowModal, setIsAuthenticated }) => {
   return (
     <Modal show={showModal} onHide={() => setShowModal(false)}>
       <Modal.Header closeButton>Sign Up</Modal.Header>
       <Form onSubmit={async (e) => {
         e.preventDefault();
         const user = await createUser(e);
+        if(user.token) setIsAuthenticated(true);
         localStorage.setItem('token', `${user.token}`);
         localStorage.setItem('id', `${user._id}`);
+        localStorage.setItem('role', `${user.role}`);
       }}>
 
         <Form.Group className="mb-3">

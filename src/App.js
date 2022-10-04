@@ -12,17 +12,21 @@ import { useState } from 'react';
 
 export default function App() {
 
-  const [id, setId] = useState('');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    if(localStorage.getItem('token')) setIsAuthenticated(true);
+  }, [isAuthenticated])
 
   return (
     <div className="App">
-      <TopNav id={id} setId={setId}/>
+      <TopNav isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated}/>
 
       <BrowserRouter>
         <Routes>
           <Route exact path='/' element={<Home />} />
           <Route path='my-books' element=
-            {<MyBooks id={id} setId={setId}/>} 
+            {<MyBooks isAuthenticated={isAuthenticated}/>} 
           />
           <Route path='book-search' element={<BookSearch />} />
           <Route path='*' element={<NoPage />} />

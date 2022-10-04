@@ -7,7 +7,7 @@ import Notes from './Notes';
 import './../../css/MyBooks.css';
 import axios from 'axios';
 
-export default function MyBooks({ id, setId }) {
+export default function MyBooks({ isAuthenticated }) {
   const [showModal, setShowModal] = useState(false);
   const [action, setAction] = useState('');
   const [selectedBook, setSelectedBook] = useState({});
@@ -31,59 +31,66 @@ export default function MyBooks({ id, setId }) {
       }
     }
     if(localStorage.getItem('token')) getBooks();
+    else setBooks([]);
   }, [setBooks, books]);
 
   return (
     <>
-      {
-      !showNotes && 
+      {isAuthenticated &&
       <>
-      <Container id='myBooksContainer'>
-        <Button
-          onClick={() => {
-            setAction('add');
-            setShowModal(true);
-          }
-          } >
-          Add to Collection
-        </Button>
-        <Row id="filterContainer">
-          <Filter />
+        {
+          !showNotes && 
+          <>
+            <Container id='myBooksContainer'>
 
-          <Col xs='9' lg='10'>
-            <Container id="allBookDiv">
-              {
-                books &&
-                books.map(book => {
-                  return <Book
-                    key={book._id}
-                    book={book}
-                    setShowModal={setShowModal}
-                    setAction={setAction}
-                    setSelectedBook={setSelectedBook}
-                    setShowNotes={setShowNotes}
-                  />
-                })
-              }
+              <Button
+                onClick={() => {
+                  setAction('add');
+                  setShowModal(true);
+                  }
+                }>
+                Add to Collection
+              </Button>
+
+              <Row id="filterContainer">
+                <Filter />
+
+                <Col xs='9' lg='10'>
+                  <Container id="allBookDiv">
+                    {
+                      books &&
+                      books.map(book => {
+                        return <Book
+                          key={book._id}
+                          book={book}
+                          setShowModal={setShowModal}
+                          setAction={setAction}
+                          setSelectedBook={setSelectedBook}
+                          setShowNotes={setShowNotes}
+                        />
+                      })
+                    }
+                  </Container>
+                </Col>
+              </Row>
             </Container>
-          </Col>
-        </Row>
-      </Container>
 
-      <BookForm
-        showModal={showModal}
-        setShowModal={setShowModal}
-        action={action}
-        selectedBook={selectedBook}
-        books={books}
-        setBooks={setBooks}
-      />
-    </>
-    }
+            <BookForm
+              showModal={showModal}
+              setShowModal={setShowModal}
+              action={action}
+              selectedBook={selectedBook}
+              books={books}
+              setBooks={setBooks}
+            />
+          </>
+        }
 
-    {
-      showNotes &&
-      <Notes book_id={selectedBook._id} setShowNotes={setShowNotes}/>
+        {
+          showNotes &&
+          <Notes book_id={selectedBook._id} setShowNotes={setShowNotes}/>
+        }
+      </>
     }
     </>
   );
