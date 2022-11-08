@@ -1,4 +1,4 @@
-# Getting Started with Create React App
+# Virtual Bookshelf
 
 ## Overview
 This is an app that lets you keep track of books you have read or want to read. You can keep a collection of books, and notes pertaining to those books. The books can be organized into lists, and there are also sort and filter features as well.
