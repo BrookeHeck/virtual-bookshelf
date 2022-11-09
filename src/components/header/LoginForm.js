@@ -13,13 +13,13 @@ const LoginForm = () => {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    closeModal();
     try {
       if(isSigningIn) {
         dispatch(signin({username: e.target.username.value, password: e.target.password.value}));
       } else {
         dispatch(signup({username: e.target.username.value, password: e.target.password.value}));
       }
-      dispatch({type: 'login_modal', action: false});
     } catch (e) {
       console.log(e);
     }

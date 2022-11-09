@@ -14,7 +14,6 @@ const reducer = (state=initialState, action) => {
     case 'add_note_modal': return {...state, add_note_modal: action.payload};
     case 'edit_note_modal': return {...state, edit_note_modal: action.payload};
     default: return state;
-
   }
 }
 

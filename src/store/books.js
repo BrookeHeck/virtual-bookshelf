@@ -20,19 +20,20 @@ const deleteBook = (list, deletedBook) => {
 
 const reducer = (state=initialState, action) => {
   switch(action.type) {
-    case 'get_all':
+    case 'get_all_book':
       state = {...state, bookList: action.payload.bookList };
       return state;
-    case 'create':
-      state = {...state, bookList: state.bookList.push(action.payload)};
+    case 'create_book':
+      state = {...state, bookList: [...state.bookList, action.payload]};
+      console.log(state);
       return state;
-    case 'update':
+    case 'update_book':
       state = {...state, bookList: updateBook(state.list, action.payload)};
       return state;
-    case 'delete':
+    case 'delete_book':
       state = {...state, bookList: deleteBook(state.list, action.payload)};
       return state;
-    case 'change_active':
+    case 'change_active_book':
       state = {...state, activeBook: action.payload};
       return state;
     default: return state;

@@ -1,21 +1,16 @@
+import { useDispatch, useSelector } from 'react-redux';
 import { Card, Button } from 'react-bootstrap';
 import axios from 'axios';
 
-export default function Book({ setShowNotes, book, setAction, setShowModal, setSelectedBook }) {
-
+export default function Book({book}) {
+  const dispatch = useDispatch();
+  const modals = useSelector(state => state.modals);
 
   const deleteBook = async () => {
-    const token = localStorage.getItem('token')
-    if (token) {
-      try {
-        const config = {
-          headers: { "Authorization": `Bearer ${token}` }
-        }
-        let res = axios.delete(`${process.env.REACT_APP_SERVER}/my-books/${book._id}`, config);
-        return res.data;
-      } catch(e) {console.log(e)}
-    }
+    // call the delete middleware
   }
+
+
 
   return (
     <>
@@ -26,18 +21,15 @@ export default function Book({ setShowNotes, book, setAction, setShowModal, setS
           <Card.Text>{book.genre}</Card.Text>
           <Card.Text>{book.date}</Card.Text>
           <Card.Text>{book.status}</Card.Text>
-          <Card.Text onClick={() => {
-            setShowNotes(true);
-            setSelectedBook(book);
-          }}>Notes</Card.Text>
+          <Card.Text >Notes</Card.Text>
           
 
-          <Button
+          {/* <Button
             variant="primary"
             onClick={() => { setShowModal(true); setAction('edit'); setSelectedBook(book) }}
           >
             Edit
-          </Button>
+          </Button> */}
 
           <Button
             variant="primary"

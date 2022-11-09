@@ -4,7 +4,7 @@ function getSignInPayload(user) {
   return {
     type: 'login',
     payload: {
-      user,
+      user: user.user,
       token: user.token,
     }
   }

@@ -1,97 +1,33 @@
-import { Container, Row, Col, Button } from 'react-bootstrap';
-import React, { useEffect, useState } from 'react';
+import { Button } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
+import { When } from 'react-if';
 import Book from './Book.js';
 import Filter from './Filter.js';
 import BookForm from './BookForm.js';
-import Notes from './Notes';
 import './../../css/MyBooks.css';
-import axios from 'axios';
 
-export default function MyBooks({ isAuthenticated }) {
-  const [showModal, setShowModal] = useState(false);
-  const [action, setAction] = useState('');
-  const [selectedBook, setSelectedBook] = useState({});
-  const [books, setBooks] = useState([]);
-  const [showNotes, setShowNotes] = useState(false);
+export default function MyBooks() {
+  const dispatch = useDispatch();
+  const user = useSelector(state => state.user);
+  const books = useSelector(state => state.books);
+  const modals = useSelector(state => state.modals);
 
-  useEffect(() => {
-    const getBooks = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const config = {
-          headers: { "Authorization": `Bearer ${token}` },
-          method: 'get',
-          baseURL: process.env.REACT_APP_SERVER,
-          url: `/my-books/${localStorage.getItem('id')}`,
-        }
-        const res = await axios(config);
-        setBooks(res.data);
-      } catch(e) {
-        console.log(e);
-      }
-    }
-    if(localStorage.getItem('token')) getBooks();
-    else setBooks([]);
-  }, [setBooks, books]);
+  const toggleModal = (showModal) => {
+    dispatch({type: 'add_book_modal', payload: showModal});
+  }
+
+
 
   return (
-    <>
-      {isAuthenticated &&
-      <>
-        {
-          !showNotes && 
-          <>
-            <Container id='myBooksContainer'>
-
-              <Button
-                onClick={() => {
-                  setAction('add');
-                  setShowModal(true);
-                  }
-                }>
-                Add to Collection
-              </Button>
-
-              <Row id="filterContainer">
-                <Filter />
-
-                <Col xs='9' lg='10'>
-                  <Container id="allBookDiv">
-                    {
-                      books &&
-                      books.map(book => {
-                        return <Book
-                          key={book._id}
-                          book={book}
-                          setShowModal={setShowModal}
-                          setAction={setAction}
-                          setSelectedBook={setSelectedBook}
-                          setShowNotes={setShowNotes}
-                        />
-                      })
-                    }
-                  </Container>
-                </Col>
-              </Row>
-            </Container>
-
-            <BookForm
-              showModal={showModal}
-              setShowModal={setShowModal}
-              action={action}
-              selectedBook={selectedBook}
-              books={books}
-              setBooks={setBooks}
-            />
-          </>
-        }
-
-        {
-          showNotes &&
-          <Notes book_id={selectedBook._id} setShowNotes={setShowNotes}/>
-        }
-      </>
-    }
-    </>
+    <When condition={user.isAuthenticated}>
+      {/* <Filter /> */}
+      <Button onClick={() => toggleModal(true)}>Add to Collection</Button>
+      {
+        books.bookList.map(book => (
+          <Book book={book} key={book._id}/>
+        ))
+      }
+      <BookForm />
+    </When>
   );
 }

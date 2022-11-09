@@ -12,7 +12,6 @@ export default function TopNav() {
 
   const openLoginForm = () => {
     dispatch({type: 'login_modal', payload: true});
-    console.log(modals);
   }
 
   return (
