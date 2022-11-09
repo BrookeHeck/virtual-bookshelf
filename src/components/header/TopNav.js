@@ -1,10 +1,19 @@
-import { Navbar, Nav, Container } from 'react-bootstrap';
+import { Navbar, Nav, Container, Button } from 'react-bootstrap';
+import { useSelector, useDispatch } from 'react-redux';
 import Logout from './Logout.js';
-import Login from './Login';
-import Signup from './Signup';
+import LoginForm from './LoginForm.js';
 import './../../css/TopNav.css';
 
-export default function TopNav({isAuthenticated, setIsAuthenticated}) {
+
+export default function TopNav() {
+  const user = useSelector(state => state.user);
+  const modals = useSelector(state => state.modals);
+  const dispatch = useDispatch();
+
+  const openLoginForm = () => {
+    dispatch({type: 'login_modal', payload: true});
+    console.log(modals);
+  }
 
   return (
     <>
@@ -20,11 +29,11 @@ export default function TopNav({isAuthenticated, setIsAuthenticated}) {
         </Navbar.Collapse>
         </Container>
         <Container>
-          { isAuthenticated ? 
-            <Logout isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated}/> : 
+          { user.isAuthenticated ? 
+            <Logout /> : 
             <>
-              <Signup isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated}/>
-              <Login isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
+              <Button onClick={openLoginForm}>Login</Button>
+              <LoginForm />
             </>
           }
         </Container>
