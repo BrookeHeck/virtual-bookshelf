@@ -8,10 +8,7 @@ function getCreatePayload(obj) {
   return action;
 }
 
-const createBook = async (token, endpoint, body) => {
-  console.log(token)
-  console.log(endpoint);
-  console.log(body);
+const createRequest = async (token, endpoint, body) => {
   try {
     const response = await axios({
       method: 'post',
@@ -27,7 +24,7 @@ const createBook = async (token, endpoint, body) => {
 function create(token, endpoint, body) {
   return async function (dispatch) {
     try {
-      const bookRecord = await createBook(token, endpoint, body);
+      const bookRecord = await createRequest(token, endpoint, body);
       return dispatch(getCreatePayload(bookRecord));
     } catch (e) {
       return console.log(e);

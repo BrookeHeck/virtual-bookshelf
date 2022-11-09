@@ -25,7 +25,6 @@ const reducer = (state=initialState, action) => {
       return state;
     case 'create_book':
       state = {...state, bookList: [...state.bookList, action.payload]};
-      console.log(state);
       return state;
     case 'update_book':
       state = {...state, bookList: updateBook(state.list, action.payload)};

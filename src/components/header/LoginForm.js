@@ -2,12 +2,14 @@ import { Button, Modal, Form } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import { When } from 'react-if';
-import signin from '../../middleware/signin';
-import signup from '../../middleware/signup';
+import signin from './../../middleware/signin';
+import signup from './../../middleware/signup';
+import readAll from './../../middleware/crud/readAll';
 
 const LoginForm = () => {
   const dispatch = useDispatch();
   const modals = useSelector(state => state.modals);
+  const user = useSelector(state => state.user);
 
   const [ isSigningIn, setIsSigningIn ] = useState(true);
 
@@ -17,8 +19,10 @@ const LoginForm = () => {
     try {
       if(isSigningIn) {
         dispatch(signin({username: e.target.username.value, password: e.target.password.value}));
+        
       } else {
         dispatch(signup({username: e.target.username.value, password: e.target.password.value}));
+        dispatch(readAll(user.token, `my-books/${user.user_id}`));
       }
     } catch (e) {
       console.log(e);
