@@ -1,7 +1,7 @@
 
 
 const initialState = {
-  activeBook: null,
+  selectedBook: null,
   bookList: [],
   status: 'idle', // idle || loading || succeeded || failed
   error: null,
@@ -9,13 +9,14 @@ const initialState = {
 
 const updateBook = (list, updatedBook) => {
   return list.map(book => {
-    if(book.id !== updatedBook.id) return book;
+    if(book._id !== updatedBook._id) return book;
     else return updateBook;
   })
 }
 
 const deleteBook = (list, deletedBook) => {
-  return list.filter(book => book.id !== deletedBook.id);
+  console.log(deletedBook);
+  return list.filter(book => book._id !== deletedBook._id);
 }
 
 const reducer = (state=initialState, action) => {
@@ -27,13 +28,13 @@ const reducer = (state=initialState, action) => {
       state = {...state, bookList: [...state.bookList, action.payload]};
       return state;
     case 'update_book':
-      state = {...state, bookList: updateBook(state.list, action.payload)};
+      state = {...state, bookList: updateBook(state.bookList, action.payload)};
       return state;
     case 'delete_book':
-      state = {...state, bookList: deleteBook(state.list, action.payload)};
+      state = {...state, bookList: deleteBook(state.bookList, action.payload)};
       return state;
     case 'change_active_book':
-      state = {...state, activeBook: action.payload};
+      state = {...state, selectedBook: action.payload};
       return state;
     default: return state;
   }

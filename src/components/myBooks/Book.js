@@ -1,16 +1,20 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Card, Button } from 'react-bootstrap';
-import axios from 'axios';
+import deleteOne from './../../middleware/crud/delete';
 
 export default function Book({book}) {
   const dispatch = useDispatch();
-  const modals = useSelector(state => state.modals);
+  const user = useSelector(state => state.user);
 
-  const deleteBook = async () => {
+  const deleteBook = (book) => {
     // call the delete middleware
+    dispatch(deleteOne(user.token, `my-books/${book._id}`));
   }
 
-
+  const handleEditButton = (book) => {
+    dispatch({type: 'change_active_book', payload: book})
+    dispatch({type: 'edit_book_modal', payload: true });
+  }
 
   return (
     <>
@@ -24,17 +28,11 @@ export default function Book({book}) {
           <Card.Text >Notes</Card.Text>
           
 
-          {/* <Button
-            variant="primary"
-            onClick={() => { setShowModal(true); setAction('edit'); setSelectedBook(book) }}
-          >
+          <Button variant="primary" onClick={() => handleEditButton(book)}>
             Edit
-          </Button> */}
+          </Button>
 
-          <Button
-            variant="primary"
-            onClick={deleteBook}
-          >
+          <Button variant="primary" onClick={() => deleteBook(book)}>
             Delete
           </Button>
         </Card.Body>

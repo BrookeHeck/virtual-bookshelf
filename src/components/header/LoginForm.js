@@ -18,11 +18,9 @@ const LoginForm = () => {
     closeModal();
     try {
       if(isSigningIn) {
-        dispatch(signin({username: e.target.username.value, password: e.target.password.value}));
-        
+        dispatch(signin({username: e.target.username.value, password: e.target.password.value}));        
       } else {
         dispatch(signup({username: e.target.username.value, password: e.target.password.value}));
-        dispatch(readAll(user.token, `my-books/${user.user_id}`));
       }
     } catch (e) {
       console.log(e);

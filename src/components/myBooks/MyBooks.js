@@ -1,4 +1,4 @@
-import { Button } from 'react-bootstrap';
+import { Button, Container } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { When } from 'react-if';
 import Book from './Book.js';
@@ -13,7 +13,7 @@ export default function MyBooks() {
   const modals = useSelector(state => state.modals);
 
   const toggleModal = (showModal) => {
-    dispatch({type: 'add_book_modal', payload: showModal});
+    dispatch({ type: 'add_book_modal', payload: showModal });
   }
 
 
@@ -22,11 +22,13 @@ export default function MyBooks() {
     <When condition={user.isAuthenticated}>
       {/* <Filter /> */}
       <Button onClick={() => toggleModal(true)}>Add to Collection</Button>
-      {
-        books.bookList.map(book => (
-          <Book book={book} key={book._id}/>
-        ))
-      }
+      <Container>
+        {
+          books.bookList.map(book => (
+            <Book book={book} key={book._id} />
+          ))
+        }
+      </Container>
       <BookForm />
     </When>
   );
