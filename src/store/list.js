@@ -1,6 +1,15 @@
 const initialState = {
-  activeList: null,
+  activeList: 'All Books',
   lists: []
+}
+
+const getActive = (activeList, listName) => {
+  if(activeList === listName) return 'All Books';
+  else return activeList;
+}
+
+const removeList = (listArr, list) => {
+  return listArr.filter(currList => currList._id !== list._id);
 }
 
 const reducer = (state=initialState, action) => {
@@ -17,6 +26,11 @@ const reducer = (state=initialState, action) => {
       return state;
     case 'update_list':
       state = { ...state, lists: action.payload}
+      return state;
+    case 'delete_list':
+      const filteredList = removeList(state.lists, action.payload);
+      const active = getActive(state.activeList, action.payload.listName);
+      state = {activeList: active, lists: filteredList}
       return state;
     default: return state;
   }

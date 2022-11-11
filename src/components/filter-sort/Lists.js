@@ -1,19 +1,22 @@
 import { Form, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import CreateList from './CreateList';
+import RemoveList from './RemoveList';
 
 const Lists = () => {
   const dispatch = useDispatch();
   const list = useSelector(state => state.list);
 
-  console.log(list.lists);
-
   const changeActiveList = (e) => {
-    console.log(e.target.value);
+    dispatch({type: 'change_active_list', payload: e.target.value});
   }
 
-  const showModal = () => {
+  const showAddModal = () => {
     dispatch({type: 'add_list_modal', payload: true});
+  }
+
+  const showRemoveModal = () => {
+    dispatch({type: 'remove_list_modal', payload: true})
   }
 
   return (
@@ -30,8 +33,10 @@ const Lists = () => {
         </Form.Select>
       </Form.Group>
 
-      <Button onClick={showModal}>Add List</Button>
+      <Button onClick={showAddModal}>Add List</Button>
+      <Button onClick={showRemoveModal}>Remove List</Button>
       <CreateList />
+      <RemoveList />
     </>
   )  
 }

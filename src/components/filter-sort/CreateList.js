@@ -19,9 +19,8 @@ const CreateList = () => {
       user_id: user.user._id,
       books: [],
     }
-    console.log(user.token);
     dispatch(create(user.token, 'lists', newList));
-    dispatch({type: 'add_list_modal', payload: false});
+    closeModal();
   }
 
   return (

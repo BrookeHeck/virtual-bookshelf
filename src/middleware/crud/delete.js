@@ -25,9 +25,9 @@ const deleteRequest = async (token, endpoint) => {
 function deleteOne(token, endpoint) {
   return async function (dispatch) {
     try {
-      const bookRecord = await deleteRequest(token, endpoint);
-      console.log(bookRecord);
-      return dispatch(getDeletePayload(bookRecord));
+      const deletedRecord = await deleteRequest(token, endpoint);
+      console.log(deletedRecord);
+      return dispatch(getDeletePayload(deletedRecord));
     } catch (e) {
       return console.log(e);
     }
