@@ -1,8 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { Card, Button } from 'react-bootstrap';
+import UpdateList from './../../components/filter-sort/UpdateList';
 import deleteOne from './../../middleware/crud/delete';
+import './../../css/book.css';
 
-export default function Book({book}) {
+export default function Book({ book }) {
   const dispatch = useDispatch();
   const user = useSelector(state => state.user);
 
@@ -12,8 +14,13 @@ export default function Book({book}) {
   }
 
   const handleEditButton = (book) => {
-    dispatch({type: 'change_active_book', payload: book})
-    dispatch({type: 'edit_book_modal', payload: true });
+    dispatch({ type: 'change_active_book', payload: book })
+    dispatch({ type: 'edit_book_modal', payload: true });
+  }
+
+  const handleAddBookToList = (book) => {
+    dispatch({type: 'change_active_book', payload: book});
+    dispatch({type: 'update_list_modal', payload: true});
   }
 
   return (
@@ -26,7 +33,7 @@ export default function Book({book}) {
           <Card.Text>{book.date}</Card.Text>
           <Card.Text>{book.status}</Card.Text>
           <Card.Text >Notes</Card.Text>
-          
+
 
           <Button variant="primary" onClick={() => handleEditButton(book)}>
             Edit
@@ -35,8 +42,15 @@ export default function Book({book}) {
           <Button variant="primary" onClick={() => deleteBook(book)}>
             Delete
           </Button>
+
+          <Button variant="primary" onClick={() => handleAddBookToList(book)}>
+            Add to List
+          </Button>
+
         </Card.Body>
       </Card>
+
+      <UpdateList/>
     </>
   );
 }

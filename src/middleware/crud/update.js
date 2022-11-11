@@ -24,6 +24,7 @@ const updateRequest = async (token, endpoint, body) => {
 function update(token, endpoint, body) {
   return async function (dispatch) {
     try {
+      console.log(body);
       const bookRecord = await updateRequest(token, endpoint, body);
       return dispatch(getUpdatePayload(bookRecord));
     } catch (e) {

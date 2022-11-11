@@ -12,6 +12,13 @@ const removeList = (listArr, list) => {
   return listArr.filter(currList => currList._id !== list._id);
 }
 
+const updateList = (listArr, list) => {
+  return listArr.map(currList => {
+    if(currList._id === list._id) return list;
+    else return currList;
+  });
+}
+
 const reducer = (state=initialState, action) => {
   switch(action.type) {
     case 'change_active_list':
@@ -25,7 +32,8 @@ const reducer = (state=initialState, action) => {
       state = { ...state, lists:  newList};
       return state;
     case 'update_list':
-      state = { ...state, lists: action.payload}
+      const updatedList = updateList(state.lists, action.payload);
+      state = { ...state, lists: updatedList}
       return state;
     case 'delete_list':
       const filteredList = removeList(state.lists, action.payload);
