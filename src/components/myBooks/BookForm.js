@@ -1,15 +1,18 @@
 import { Button, Modal, Form } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux'
 import create from './../../middleware/crud/create';
+import update from './../../middleware/crud/update';
 
 
 export default function BookForm() {
   const dispatch = useDispatch();
   const modals = useSelector(state => state.modals);
   const user = useSelector(state => state.user);
+  const books = useSelector(state => state.books);
 
   const closeModal = () => {
-    dispatch({ type: 'add_book_modal', payload: false })
+    dispatch({ type: 'add_book_modal', payload: false });
+    dispatch({ type: 'edit_book_modal', payload: false});
   }
 
   const handleSubmit = async (e) => {
@@ -19,26 +22,31 @@ export default function BookForm() {
     const date = new Date();
     const newBook = {
       item: 'book',
-      title: e.target.title.value,
-      author: e.target.author.value,
-      genre: e.target.genre.value,
+      title: e.target.title.value || books.selectedBook.title,
+      author: e.target.author.value || books.selectedBook.author,
+      genre: e.target.genre.value || books.selectedBook.genre,
       date: `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`,
-      status: e.target.status.value,
+      status: e.target.status.value || books.selectedBook.status,
       user_id: user.user._id,
     }
 
-    const endpoint = 'my-books';
     const token = user.token;
 
+    console.log(books);
+
     try {
-      dispatch(create(token, endpoint, newBook));
+      if(modals.add_book_modal) dispatch(create(token, 'my-books', newBook));
+      if(modals.edit_book_modal) {
+        newBook._id = books.selectedBook
+        dispatch(update(token, `my-books/${books.selectedBook._id}`, newBook));
+      };
     } catch(e) {
       console.log(e);
     }
   }
 
   return (
-    <Modal show={modals.add_book_modal} onClose={closeModal}>
+    <Modal show={modals.add_book_modal || modals.edit_book_modal} onClose={closeModal}>
       <Modal.Header closeButton>Add a Book</Modal.Header>
       <Form onSubmit={handleSubmit}>
 

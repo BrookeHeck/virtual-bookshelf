@@ -10,7 +10,7 @@ const initialState = {
 const updateBook = (list, updatedBook) => {
   return list.map(book => {
     if(book._id !== updatedBook._id) return book;
-    else return updateBook;
+    else return updatedBook;
   })
 }
 
