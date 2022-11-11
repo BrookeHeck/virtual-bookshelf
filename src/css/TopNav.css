@@ -1,3 +1,20 @@
-.container>*, .navbar-expand .navbar-nav{
+.container>*, .navbar-expand .navbar-nav {
   margin: 0 auto;
+}
+
+.nav-item {
+  margin: 5px 10px;
+  width: fit-content;
+}
+
+#login-logout .btn {
+  width: 100px;
+}
+
+#login-logout {
+  width: fit-content;
+}
+
+#brand {
+  margin-left: 10px;
 }

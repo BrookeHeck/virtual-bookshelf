@@ -24,8 +24,8 @@ const createRequest = async (token, endpoint, body) => {
 function create(token, endpoint, body) {
   return async function (dispatch) {
     try {
-      const bookRecord = await createRequest(token, endpoint, body);
-      return dispatch(getCreatePayload(bookRecord));
+      const createdRecord = await createRequest(token, endpoint, body);
+      return dispatch(getCreatePayload(createdRecord));
     } catch (e) {
       return console.log(e);
     }

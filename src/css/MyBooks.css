@@ -4,18 +4,18 @@
   padding: 0;
 }
 
-#allBookDiv {
+#booksCol {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
   justify-content: flex-start;
 }
 
-#myBooksContainer {
-  max-width: none;
-}
-
-#allBooksDiv .card .card-body {
+#booksCol .card {
   display: flex;
   flex-direction: column;
+  height: fit-content;
+}
+
+#addButton {
+  margin: 10px;
 }

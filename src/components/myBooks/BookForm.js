@@ -32,8 +32,6 @@ export default function BookForm() {
 
     const token = user.token;
 
-    console.log(books);
-
     try {
       if(modals.add_book_modal) dispatch(create(token, 'my-books', newBook));
       if(modals.edit_book_modal) {

@@ -5,14 +5,18 @@ const initialState = {
 
 const reducer = (state=initialState, action) => {
   switch(action.type) {
-    case 'change_active':
+    case 'change_active_list':
       state = { ...state, activeList: action.payload} ;
       return state;
-    case 'get_all':
+    case 'get_all_list':
       state = { ...state, lists: action.payload };
       return state;
-    case 'create':
-      state = { ...state, lists: state.lists.push(action.payload) };
+    case 'create_list': 
+      const newList = [...state.lists, action.payload];
+      state = { ...state, lists:  newList};
+      return state;
+    case 'update_list':
+      state = { ...state, lists: action.payload}
       return state;
     default: return state;
   }

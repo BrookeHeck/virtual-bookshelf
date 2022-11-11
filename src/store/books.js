@@ -15,14 +15,13 @@ const updateBook = (list, updatedBook) => {
 }
 
 const deleteBook = (list, deletedBook) => {
-  console.log(deletedBook);
   return list.filter(book => book._id !== deletedBook._id);
 }
 
 const reducer = (state=initialState, action) => {
   switch(action.type) {
     case 'get_all_book':
-      state = {...state, bookList: action.payload.bookList };
+      state = {...state, bookList: action.payload };
       return state;
     case 'create_book':
       state = {...state, bookList: [...state.bookList, action.payload]};

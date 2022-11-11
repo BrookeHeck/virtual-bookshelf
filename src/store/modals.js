@@ -3,7 +3,8 @@ const initialState = {
   add_book_modal: false,
   edit_book_modal: false,
   add_note_modal: false,
-  edit_note_modal: false, 
+  edit_note_modal: false,
+  add_list_modal: false,
 }
 
 const reducer = (state=initialState, action) => {
@@ -13,6 +14,7 @@ const reducer = (state=initialState, action) => {
     case 'edit_book_modal': return {...state, edit_book_modal: action.payload};
     case 'add_note_modal': return {...state, add_note_modal: action.payload};
     case 'edit_note_modal': return {...state, edit_note_modal: action.payload};
+    case 'add_list_modal': return {...state, add_list_modal: action.payload}
     default: return state;
   }
 }

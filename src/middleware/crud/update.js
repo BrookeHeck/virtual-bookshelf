@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 function getUpdatePayload(obj) {
-  console.log(obj);
   const action = {
     type: `update_${obj.item}`,
     payload: obj

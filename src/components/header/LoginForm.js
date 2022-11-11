@@ -4,12 +4,10 @@ import { useState } from 'react';
 import { When } from 'react-if';
 import signin from './../../middleware/signin';
 import signup from './../../middleware/signup';
-import readAll from './../../middleware/crud/readAll';
 
 const LoginForm = () => {
   const dispatch = useDispatch();
   const modals = useSelector(state => state.modals);
-  const user = useSelector(state => state.user);
 
   const [ isSigningIn, setIsSigningIn ] = useState(true);
 

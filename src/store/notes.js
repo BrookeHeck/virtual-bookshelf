@@ -16,19 +16,19 @@ const deleteNote = (list, deletedNote) => {
 
 const reducer = (state=initialState, action) => {
   switch(action.type) {
-    case 'get_all':
+    case 'get_all_note':
       state = {...state, noteList: action.payload.noteList };
       return state;
-    case 'create':
+    case 'create_note':
       state = {...state, noteList: state.noteList.push(action.payload)};
       return state;
-    case 'update':
+    case 'update_note':
       state = {...state, noteList: updateNote(state.list, action.payload)};
       return state;
-    case 'delete':
+    case 'delete_note':
       state = {...state, noteList: deleteNote(state.list, action.payload)};
       return state;
-    case 'change_active':
+    case 'change_active_note':
       state = {...state, activeNote: action.payload};
       return state;
     default: return state;

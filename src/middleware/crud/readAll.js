@@ -26,7 +26,6 @@ function readAll(token, endpoint) {
       const bookArr = await readAllRequest(token, endpoint);
       return dispatch(getReadAllPayload(bookArr));
     } catch (e) {
-      return console.log(e);
     }
   }
 }
