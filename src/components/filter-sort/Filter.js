@@ -1,4 +1,5 @@
 import { Col, Card } from 'react-bootstrap';
+import Lists from './Lists'
 
 export default function Filter() {
   return (
@@ -6,10 +7,8 @@ export default function Filter() {
       <Card style={{ width: '15rem', height: '100vh', marginLeft: '10px' }} >
         <Card.Body>
           <Card.Title>Filter By List</Card.Title>
+          <Lists />
           <Card.Title>Sort By</Card.Title>
-          <Card.Text>Genre</Card.Text>
-          <Card.Text>Date Read</Card.Text>
-          <Card.Text>status</Card.Text>
         </Card.Body>
       </Card>
     </Col>

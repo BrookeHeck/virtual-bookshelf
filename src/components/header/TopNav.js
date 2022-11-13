@@ -1,35 +1,39 @@
-import { Navbar, Nav, Container } from 'react-bootstrap';
+import { Navbar, Container, Button, NavItem } from 'react-bootstrap';
+import { useSelector, useDispatch } from 'react-redux';
 import Logout from './Logout.js';
-import Login from './Login';
-import Signup from './Signup';
+import LoginForm from './LoginForm.js';
 import './../../css/TopNav.css';
 
-export default function TopNav({isAuthenticated, setIsAuthenticated}) {
+
+export default function TopNav({ setPage }) {
+  const user = useSelector(state => state.user);
+  const dispatch = useDispatch();
+
+  const openLoginForm = () => {
+    dispatch({ type: 'login_modal', payload: true });
+  }
 
   return (
     <>
       <Navbar bg="light">
-        <Container>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link href='/'>Home</Nav.Link>
-            <Nav.Link href="/my-books">My Books</Nav.Link>
-            <Nav.Link href="/book-search">Search For Books</Nav.Link>
-          </Nav>
-        </Navbar.Collapse>
+        <Navbar.Brand id='brand' >Virtual Bookshelf</Navbar.Brand>
+
+        <Container className='justify-content-center'>
+          <NavItem onClick={() => setPage('home')}>Home</NavItem>
+          <NavItem onClick={() => setPage('my-books')}>My Books</NavItem>
+          <NavItem onClick={() => setPage('search-books')}>Search Books</NavItem>
         </Container>
-        <Container>
-          { isAuthenticated ? 
-            <Logout isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated}/> : 
-            <>
-              <Signup isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated}/>
-              <Login isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
-            </>
+
+        <Container className='justify-content-end' id='login-logout'>
+          {user.isAuthenticated ?
+            <NavItem><Logout /></NavItem> :
+            <NavItem>
+              <Button onClick={openLoginForm}>Login</Button>
+              <LoginForm />
+            </NavItem>
           }
         </Container>
       </Navbar>
-      <br />
     </>
   );
 }

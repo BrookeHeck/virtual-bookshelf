@@ -1,97 +1,62 @@
-import { Container, Row, Col, Button } from 'react-bootstrap';
-import React, { useEffect, useState } from 'react';
+import { Button, Container, Row, Col } from 'react-bootstrap';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import readAll from '../../middleware/crud/readAll.js';
+import { When } from 'react-if';
 import Book from './Book.js';
-import Filter from './Filter.js';
+import Filter from '../filter-sort/Filter';
+import filterByList from './../../utils/filter';
 import BookForm from './BookForm.js';
-import Notes from './Notes';
 import './../../css/MyBooks.css';
-import axios from 'axios';
 
-export default function MyBooks({ isAuthenticated }) {
-  const [showModal, setShowModal] = useState(false);
-  const [action, setAction] = useState('');
-  const [selectedBook, setSelectedBook] = useState({});
-  const [books, setBooks] = useState([]);
-  const [showNotes, setShowNotes] = useState(false);
+export default function MyBooks() {
+  const dispatch = useDispatch();
+  const user = useSelector(state => state.user);
+  const books = useSelector(state => state.books);
+  const list = useSelector(state => state.list);
+
+  const [ displayList, setDisplayList ] = useState(books.bookList);
 
   useEffect(() => {
-    const getBooks = async () => {
-      try {
-        const token = localStorage.getItem('token');
-        const config = {
-          headers: { "Authorization": `Bearer ${token}` },
-          method: 'get',
-          baseURL: process.env.REACT_APP_SERVER,
-          url: `/my-books/${localStorage.getItem('id')}`,
-        }
-        const res = await axios(config);
-        setBooks(res.data);
-      } catch(e) {
-        console.log(e);
-      }
+    if (user.isAuthenticated) {
+      dispatch(readAll(user.token, `my-books/${user.user._id}`));
+      dispatch(readAll(user.token, `lists/${user.user._id}`));
     }
-    if(localStorage.getItem('token')) getBooks();
-    else setBooks([]);
-  }, [setBooks, books]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user.isAuthenticated]);
+
+  useEffect(() => {
+    if(list.activeList === 'All Books') {
+      setDisplayList(books.bookList);
+    } else {
+      const newActive = list.lists.find(currList => list.activeList === currList.listName);
+      const newBookArr = filterByList(books.bookList, newActive.books);
+      setDisplayList(newBookArr);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [books.bookList, list.activeList]);
+
+  const toggleModal = (showModal) => {
+    dispatch({ type: 'add_book_modal', payload: showModal });
+  }
 
   return (
-    <>
-      {isAuthenticated &&
-      <>
-        {
-          !showNotes && 
-          <>
-            <Container id='myBooksContainer'>
+    <When condition={user.isAuthenticated}>
+      <Button onClick={() => toggleModal(true)} id='addButton' >Add to Collection</Button>
 
-              <Button
-                onClick={() => {
-                  setAction('add');
-                  setShowModal(true);
-                  }
-                }>
-                Add to Collection
-              </Button>
-
-              <Row id="filterContainer">
-                <Filter />
-
-                <Col xs='9' lg='10'>
-                  <Container id="allBookDiv">
-                    {
-                      books &&
-                      books.map(book => {
-                        return <Book
-                          key={book._id}
-                          book={book}
-                          setShowModal={setShowModal}
-                          setAction={setAction}
-                          setSelectedBook={setSelectedBook}
-                          setShowNotes={setShowNotes}
-                        />
-                      })
-                    }
-                  </Container>
-                </Col>
-              </Row>
-            </Container>
-
-            <BookForm
-              showModal={showModal}
-              setShowModal={setShowModal}
-              action={action}
-              selectedBook={selectedBook}
-              books={books}
-              setBooks={setBooks}
-            />
-          </>
-        }
-
-        {
-          showNotes &&
-          <Notes book_id={selectedBook._id} setShowNotes={setShowNotes}/>
-        }
-      </>
-    }
-    </>
+      <Container>
+        <Row>
+          <Col xs={4}><Filter /></Col>
+          <Col xs={8} id='booksCol'>
+            {
+              displayList.map(book => (
+                <Book book={book} key={book._id} />
+              ))
+            }
+          </Col>
+        </Row>
+      </Container>
+      <BookForm />
+    </When>
   );
 }

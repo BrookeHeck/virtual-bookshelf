@@ -1,62 +1,50 @@
 import { Button, Modal, Form } from 'react-bootstrap';
-import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux'
+import create from './../../middleware/crud/create';
+import update from './../../middleware/crud/update';
 
 
-export default function BookForm({ showModal, setShowModal, action, selectedBook, setBooks, books }) {
+export default function BookForm() {
+  const dispatch = useDispatch();
+  const modals = useSelector(state => state.modals);
+  const user = useSelector(state => state.user);
+  const books = useSelector(state => state.books);
 
-  const addBook = async (token, newBook) => {
-    try {
-      const config = {
-        headers: { "Authorization": `Bearer ${token}` }
-      }
-      const res = await axios.post(`${process.env.REACT_APP_SERVER}/my-books`, newBook, config);
-      const updatedList = books;
-      updatedList.push(res.data);
-      setBooks(updatedList);
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
-  const editBook = async (token, updatedBook) => {
-    try {
-      const config = {
-        headers: { "Authorization": `Bearer ${token}` }
-      }
-      let res = await axios.put(`${process.env.REACT_APP_SERVER}/my-books/${selectedBook._id}`, updatedBook, config);
-      const updatedList = books;
-      const index = updatedList.findIndex(book => book._id === selectedBook._id);
-      updatedList.splice(index, 1, res.data);
-      setBooks(updatedList);
-    } catch (e) {
-      console.log(e);
-    }
+  const closeModal = () => {
+    dispatch({ type: 'add_book_modal', payload: false });
+    dispatch({ type: 'edit_book_modal', payload: false});
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    setShowModal(false);
+    closeModal();
 
     const date = new Date();
     const newBook = {
-      title: e.target.title.value || selectedBook.title,
-      author: e.target.author.value || selectedBook.author,
-      genre: e.target.genre.value || selectedBook.genre,
-      date: selectedBook.date || `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`,
-      status: e.target.status.value || selectedBook.status,
-      user_id: localStorage.getItem('id'),
+      item: 'book',
+      title: e.target.title.value || books.selectedBook.title,
+      author: e.target.author.value || books.selectedBook.author,
+      genre: e.target.genre.value || books.selectedBook.genre,
+      date: `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`,
+      status: e.target.status.value || books.selectedBook.status,
+      user_id: user.user._id,
     }
+
+    const token = user.token;
+
     try {
-      const token = localStorage.getItem('token');
-      action === 'add' ? addBook(token, newBook) : editBook(token, newBook);
+      if(modals.add_book_modal) dispatch(create(token, 'my-books', newBook));
+      if(modals.edit_book_modal) {
+        newBook._id = books.selectedBook
+        dispatch(update(token, `my-books/${books.selectedBook._id}`, newBook));
+      };
     } catch(e) {
       console.log(e);
     }
   }
 
   return (
-    <Modal show={showModal} onHide={() => setShowModal(false)}>
+    <Modal show={modals.add_book_modal || modals.edit_book_modal} onHide={closeModal}>
       <Modal.Header closeButton>Add a Book</Modal.Header>
       <Form onSubmit={handleSubmit}>
 

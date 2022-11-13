@@ -1,20 +1,26 @@
+import { useDispatch, useSelector } from 'react-redux';
 import { Card, Button } from 'react-bootstrap';
-import axios from 'axios';
+import UpdateList from './../../components/filter-sort/UpdateList';
+import deleteOne from './../../middleware/crud/delete';
+import './../../css/book.css';
 
-export default function Book({ setShowNotes, book, setAction, setShowModal, setSelectedBook }) {
+export default function Book({ book }) {
+  const dispatch = useDispatch();
+  const user = useSelector(state => state.user);
 
+  const deleteBook = (book) => {
+    // call the delete middleware
+    dispatch(deleteOne(user.token, `my-books/${book._id}`));
+  }
 
-  const deleteBook = async () => {
-    const token = localStorage.getItem('token')
-    if (token) {
-      try {
-        const config = {
-          headers: { "Authorization": `Bearer ${token}` }
-        }
-        let res = axios.delete(`${process.env.REACT_APP_SERVER}/my-books/${book._id}`, config);
-        return res.data;
-      } catch(e) {console.log(e)}
-    }
+  const handleEditButton = (book) => {
+    dispatch({ type: 'change_active_book', payload: book })
+    dispatch({ type: 'edit_book_modal', payload: true });
+  }
+
+  const handleAddBookToList = (book) => {
+    dispatch({type: 'change_active_book', payload: book});
+    dispatch({type: 'update_list_modal', payload: true});
   }
 
   return (
@@ -26,27 +32,25 @@ export default function Book({ setShowNotes, book, setAction, setShowModal, setS
           <Card.Text>{book.genre}</Card.Text>
           <Card.Text>{book.date}</Card.Text>
           <Card.Text>{book.status}</Card.Text>
-          <Card.Text onClick={() => {
-            setShowNotes(true);
-            setSelectedBook(book);
-          }}>Notes</Card.Text>
-          
+          <Card.Text >Notes</Card.Text>
 
-          <Button
-            variant="primary"
-            onClick={() => { setShowModal(true); setAction('edit'); setSelectedBook(book) }}
-          >
+
+          <Button variant="primary" onClick={() => handleEditButton(book)}>
             Edit
           </Button>
 
-          <Button
-            variant="primary"
-            onClick={deleteBook}
-          >
+          <Button variant="primary" onClick={() => deleteBook(book)}>
             Delete
           </Button>
+
+          <Button variant="primary" onClick={() => handleAddBookToList(book)}>
+            Add to List
+          </Button>
+
         </Card.Body>
       </Card>
+
+      <UpdateList/>
     </>
   );
 }

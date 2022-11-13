@@ -1,10 +1,15 @@
 import { Button } from 'react-bootstrap';
-import React from "react";
+import store from './../../store';
 
-const LogoutButton = ({ setIsAuthenticated }) => {
+
+const LogoutButton = () => {
+
+  const handleLogout = () => {
+    store.dispatch({ type: 'logout' });
+  }
 
   return (
-    <Button onClick={() => { localStorage.clear(); setIsAuthenticated(false); }}>
+    <Button onClick={handleLogout}>
       Log Out
     </Button>
   );

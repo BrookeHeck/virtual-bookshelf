@@ -1,6 +1,7 @@
 import { Button, Modal, Form } from 'react-bootstrap';
 import React, { useState } from 'react';
-const axios = require('axios');
+import signup from '../../middleware/signup';
+import store from './../../store'
 
 export default function Signup({setUser, setIsAuthenticated}) {
   const [showModal, setShowModal] = useState(false);
@@ -8,28 +9,16 @@ export default function Signup({setUser, setIsAuthenticated}) {
   return (
     <>
       <Button onClick={() => setShowModal(true)}>Sign Up</Button>
-      <SignupForm 
-        setUser={setUser}
-        showModal={showModal}
-        setShowModal={setShowModal}
-        setIsAuthenticated={setIsAuthenticated}  
-      />
+      <SignupForm />
     </>
   );
 };
 
-// get a user from the database, search database by the email
-// if the database search comes up empty, create a user using credentials from Auth0
-async function createUser(e) {
+
+function handleSubmit(e) {
   try {
-    const config = {
-      method: 'post',
-      baseURL: process.env.REACT_APP_SERVER,
-      url: '/signup',
-      data: {username: e.target.username.value, password: e.target.password.value},
-    }
-    let res = await axios(config);
-    return res.data;
+    store.dispatch(signup({username: e.target.username.value, password: e.target.password.value}));
+    console.log(store.getState());
   } catch(e) {
     console.log(e);
   }
@@ -39,14 +28,7 @@ const SignupForm = ({ showModal, setShowModal, setIsAuthenticated }) => {
   return (
     <Modal show={showModal} onHide={() => setShowModal(false)}>
       <Modal.Header closeButton>Sign Up</Modal.Header>
-      <Form onSubmit={async (e) => {
-        e.preventDefault();
-        const user = await createUser(e);
-        if(user.token) setIsAuthenticated(true);
-        localStorage.setItem('token', `${user.token}`);
-        localStorage.setItem('id', `${user._id}`);
-        localStorage.setItem('role', `${user.role}`);
-      }}>
+      <Form onSubmit={handleSubmit}>
 
         <Form.Group className="mb-3">
           <Form.Label htmlFor='username'>username</Form.Label>

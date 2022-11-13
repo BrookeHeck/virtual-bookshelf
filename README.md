@@ -1,6 +1,9 @@
-# Getting Started with Create React App
+# Virtual Bookshelf
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
+This is an app that lets you keep track of books you have read or want to read. You can keep a collection of books, and notes pertaining to those books. The books can be organized into lists, and there are also sort and filter features as well.
+
+## Wireframe and UML
 
 ## Available Scripts
 
@@ -39,32 +42,14 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
+## Resources
+[React Redux Thunk Middleware in Redux Toolkit for Async Actions with Axios](https://www.youtube.com/watch?v=93CR_yURoII)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Change Log
+- 10-sep-2022 - react app setup, get navbar and books to render
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- 11-sep-2022 - add login and authorization
 
-### Code Splitting
+- 01-oct-2022 - CRUD methods working to get, add, update, and delete books from a server
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- 02-oct-2022 - add notes features
