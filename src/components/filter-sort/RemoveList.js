@@ -1,6 +1,6 @@
 import { Button, ListGroup, Modal, Container } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import deleteOne from './../../middleware/crud/delete';
+import deleteOne from '../../middleware/crud/delete';
 
 const RemoveList = () => {
   const dispatch = useDispatch();

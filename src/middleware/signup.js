@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-function getSignUpPayload(user) {
+function getSignUpPayload(user, booksList) {
   return {
     type: 'login',
     payload: {

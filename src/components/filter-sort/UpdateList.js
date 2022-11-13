@@ -1,6 +1,6 @@
 import { ListGroup, Button, Modal, Container } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import update from './../../middleware/crud/update';
+import update from '../../middleware/crud/update';
 
 const UpdateList = () => {
   const dispatch = useDispatch();
@@ -10,7 +10,6 @@ const UpdateList = () => {
   const selectedBook = useSelector(state => state.books.selectedBook);
 
   const handleUpdate = (list) => {
-    console.log(list);
     list.books.push(selectedBook._id);
     console.log(list);
     dispatch(update(user.token, `lists/${list._id}`, list));

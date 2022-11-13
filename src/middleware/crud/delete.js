@@ -1,12 +1,10 @@
 import axios from 'axios';
 
 function getDeletePayload(obj) {
-  console.log(obj);
   const action = {
     type: `delete_${obj.item}`,
     payload: obj
   }
-  console.log(action);
   return action;
 }
 

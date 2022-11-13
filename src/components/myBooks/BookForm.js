@@ -44,7 +44,7 @@ export default function BookForm() {
   }
 
   return (
-    <Modal show={modals.add_book_modal || modals.edit_book_modal} onClose={closeModal}>
+    <Modal show={modals.add_book_modal || modals.edit_book_modal} onHide={closeModal}>
       <Modal.Header closeButton>Add a Book</Modal.Header>
       <Form onSubmit={handleSubmit}>
 

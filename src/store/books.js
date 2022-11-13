@@ -3,8 +3,6 @@
 const initialState = {
   selectedBook: null,
   bookList: [],
-  status: 'idle', // idle || loading || succeeded || failed
-  error: null,
 }
 
 const updateBook = (list, updatedBook) => {

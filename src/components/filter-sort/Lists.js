@@ -24,7 +24,7 @@ const Lists = () => {
       <Form.Group className="mb-3">
         <Form.Label>Select a List</Form.Label>
         <Form.Select onChange={changeActiveList}>
-          <option>All Books</option>
+          <option key='all-books'>All Books</option>
           {
             list.lists.map(currList => (
               <option key={currList._id}>{currList.listName}</option>

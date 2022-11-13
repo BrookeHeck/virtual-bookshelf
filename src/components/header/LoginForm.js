@@ -30,7 +30,7 @@ const LoginForm = () => {
   }
 
   return (
-    <Modal show={modals.login_modal} onClose={closeModal}>
+    <Modal show={modals.login_modal} onHide={closeModal}>
       <Modal.Header closeButton>Sign In</Modal.Header>
       <Form onSubmit={handleSubmit}>
 
